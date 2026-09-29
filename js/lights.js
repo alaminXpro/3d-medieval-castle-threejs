@@ -1,16 +1,12 @@
 import * as THREE from "three";
 import { scene } from "./scene.js";
-
-// Soft light so every side of the castle is visible.
-const ambientLight = new THREE.AmbientLight(0xffffff, 0.55);
+export const ambientLight = new THREE.HemisphereLight(0xfff1d1, 0x51675d, 2.1);
 scene.add(ambientLight);
-
-// Main sunlight.
-const sunLight = new THREE.DirectionalLight(0xffffff, 1.0);
-sunLight.position.set(10, 18, 12);
+export const sunLight = new THREE.DirectionalLight(0xffe4b5, 3.2);
+sunLight.position.set(-14, 24, 12);
+sunLight.castShadow = true;
+sunLight.shadow.mapSize.set(2048, 2048);
+Object.assign(sunLight.shadow.camera, { left: -27, right: 27, top: 27, bottom: -27, near: 1, far: 75 });
+sunLight.shadow.normalBias = 0.035;
+sunLight.shadow.bias = -0.00015;
 scene.add(sunLight);
-
-export {
-  ambientLight,
-  sunLight
-};

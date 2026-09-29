@@ -1,23 +1,88 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Medieval Castle - CSE4204</title>
-  </head>
-  <body>
-    <div id="info">
-      <h2>Medieval Castle</h2>
-      <p>A / D or Left / Right: move camera around castle</p>
-      <p>W / S or Up / Down: zoom in / out</p>
-      <p>Mouse click on scene: raise / lower drawbridge</p>
-
-      <div class="buttons">
-        <button id="dayButton">Day</button>
-        <button id="nightButton">Night</button>
-      </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#eee9dc" />
+  <meta name="description" content="A tiny medieval campus. Ten crumpled assignments. One very overdue rebellion." />
+  <title>Deadline Siege — Cancel the Finals</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='15' fill='%23ba593e'/%3E%3Cpath d='M14 47V20h8v7h6V16h8v11h6v-7h8v27H36V35h-8v12z' fill='%23f7edda'/%3E%3C/svg%3E" />
+</head>
+<body data-status="ready">
+  <main id="scene" aria-label="Deadline Siege game"></main>
+  <div class="vignette" aria-hidden="true"></div>
+  <header class="topbar">
+    <a class="brand" href="./" aria-label="Deadline Siege home"><span class="brand-icon" aria-hidden="true">♜</span><span>DEADLINE<br><strong>SIEGE</strong></span></a>
+    <div class="edition"><span class="tiny-dot"></span> A VERY ACADEMIC REBELLION <span class="edition-separator">/</span> VOL. 01</div>
+    <div class="header-actions">
+      <button id="help-button" class="icon-button" aria-label="How to play" title="How to play" disabled>?</button>
+      <button id="pause-button" class="icon-button play-only" aria-label="Pause game" title="Pause (Esc)">Ⅱ</button>
+      <button id="restart-button" class="icon-button play-only" aria-label="Restart game" title="Restart (R)">↻</button>
     </div>
+  </header>
 
-    <script type="module" src="/index.js"></script>
-  </body>
+  <section id="intro" class="intro" aria-labelledby="intro-title">
+    <p class="eyebrow"><span></span> PROCRASTINATION UNIVERSITY</p>
+    <h1 id="intro-title">School’s out.<br><em>Cannons up.</em></h1>
+    <p class="intro-description">They gave you another surprise quiz.<br>You brought a cannon. Seems fair.</p>
+    <div class="brief"><div><b>90</b><span>SECONDS</span></div><div><b>10</b><span>ASSIGNMENTS</span></div><div><b>03</b><span>BAD IDEAS TO CANCEL</span></div></div>
+    <button id="start-button" class="primary-button" disabled>Preparing campus… <span aria-hidden="true">↗</span></button>
+    <p class="intro-footnote">No studying required. A little aim helps.</p>
+  </section>
+
+  <aside id="mission" class="mission play-only" aria-label="Mission objectives">
+    <p class="eyebrow">YOUR TO-CANCEL LIST <span id="objective-count">0 / 3</span></p>
+    <div class="objective" data-target="classes"><span class="objective-number">01</span><div><strong>8 AM Classes</strong><small>Because sleep matters.</small></div><span class="objective-status" aria-label="Not cancelled">○</span></div>
+    <div class="objective" data-target="quizzes"><span class="objective-number">02</span><div><strong>Surprise Quizzes</strong><small>Surprise them back.</small></div><span class="objective-status" aria-label="Not cancelled">○</span></div>
+    <div class="objective locked" data-target="final"><span class="objective-number">03</span><div><strong>The Final Exam</strong><small id="final-hint">Cancel the other two to unlock.</small></div><span class="objective-status" aria-label="Locked">◇</span></div>
+    <div class="bridge-indicator"><span id="bridge-dot" class="tiny-dot"></span><span>DRAWBRIDGE</span><b id="bridge-status">LOCKED</b></div>
+  </aside>
+
+  <aside class="round-stats play-only" aria-label="Round status">
+    <div class="time-label"><span class="sun-icon" aria-hidden="true">☀</span><span>UNTIL SUNSET</span></div>
+    <div id="timer" class="timer">01:30</div>
+    <div class="time-track"><span id="time-progress"></span></div>
+    <div class="ammo"><span class="paper-icon" aria-hidden="true">▱</span><strong id="ammo">10</strong><span>assignments left</span></div>
+  </aside>
+
+  <div class="world-caption ready-only"><span class="caption-line"></span><span>EST. 1404<br><b>Still assigning homework.</b></span></div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <section class="aim-panel play-only" aria-label="Cannon controls">
+    <div class="aim-heading"><span class="tiny-dot"></span><span id="shot-status">READY TO REBEL</span><span id="pitch-label">28°</span></div>
+    <div class="power-line"><span>SHOT POWER</span><div class="power-track"><span id="power-fill"></span></div><strong id="power-value">65%</strong></div>
+    <p id="aim-tip">Move mouse to aim · Hold & release to fire</p>
+    <div class="touch-controls">
+      <button id="orbit-left" aria-label="Move cannon left">←</button>
+      <button id="fire-button">Hold to fire</button>
+      <button id="orbit-right" aria-label="Move cannon right">→</button>
+    </div>
+  </section>
+
+  <footer class="bottom-bar">
+    <span class="lab-label">A SMALL REVOLT. <b>A BIG RELIEF.</b></span>
+    <div class="controls-legend"><span><kbd>A</kbd><kbd>D</kbd> orbit</span><span><kbd>W</kbd><kbd>S</kbd> zoom</span><span><span class="mouse-symbol" aria-hidden="true">◉</span> aim & fire</span><span class="desktop-extra"><kbd>ESC</kbd> pause</span></div>
+    <span class="course-label">COMPUTER GRAPHICS LAB <span>↗</span></span>
+  </footer>
+
+  <div id="dialog-backdrop" class="dialog-backdrop" hidden>
+    <section id="game-dialog" class="game-dialog" role="dialog" aria-modal="true" aria-labelledby="dialog-title" tabindex="-1">
+      <p id="dialog-eyebrow" class="eyebrow">A WELL-EARNED BREAK</p>
+      <div id="dialog-icon" class="dialog-icon" aria-hidden="true">Ⅱ</div>
+      <h2 id="dialog-title">Rebellion on pause.</h2>
+      <p id="dialog-description"></p>
+      <div id="help-content" class="help-content" hidden>
+        <p><b>1. Aim at the two tower bullseyes.</b> Move your mouse to steer the dotted arc. Mint means a target; gold means an obstacle. Move upward for a higher shot.</p>
+        <p><b>2. Hold, then release.</b> More power sends paper farther. The preview changes as you charge. Space also fires; A/D orbit and W/S zoom.</p>
+        <p><b>3. Beat the bridge.</b> After both towers are cancelled, move to the front and aim low through the gate. Fire when the bridge is open.</p>
+        <p class="help-small">90 seconds · 10 shots · R to restart · Esc to pause.<br>On touch screens, drag to aim and use the buttons to move or fire.</p>
+      </div>
+      <div id="result-stats" class="result-stats" hidden></div>
+      <button id="dialog-primary" class="primary-button">Back to the rebellion <span aria-hidden="true">↗</span></button>
+      <button id="dialog-secondary" class="text-button">Start over</button>
+    </section>
+  </div>
+  <div id="error-message" class="error-message" role="alert" hidden>We couldn’t start the 3D scene. Please enable WebGL in your browser, then reload.</div>
+  <script type="module" src="/index.js"></script>
+</body>
 </html>

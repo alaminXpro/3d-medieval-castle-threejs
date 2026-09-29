@@ -1,33 +1,19 @@
 import * as THREE from "three";
-
-const width = window.innerWidth;
-const height = window.innerHeight;
-
-// Main scene
-const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x87ceeb);
-
-// Perspective projection
-const camera = new THREE.PerspectiveCamera(
-  60,
-  width / height,
-  0.1,
-  1000
-);
-
-camera.position.set(0, 9, 22);
+export const scene = new THREE.Scene();
+scene.background = new THREE.Color(0xcbd5c3);
+scene.fog = new THREE.Fog(0xcbd5c3, 48, 115);
+export const camera = new THREE.PerspectiveCamera(43, innerWidth / innerHeight, 0.1, 180);
+camera.position.set(10, 17, 31);
 camera.lookAt(0, 2, 0);
-
-// WebGL renderer
-const renderer = new THREE.WebGLRenderer({ antialias: true });
-renderer.setSize(width, height);
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+export const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setSize(innerWidth, innerHeight);
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
 renderer.outputColorSpace = THREE.SRGBColorSpace;
-
-document.body.appendChild(renderer.domElement);
-
-export {
-  scene,
-  camera,
-  renderer
-};
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.15;
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.domElement.id = "game-canvas";
+renderer.domElement.tabIndex = -1;
+renderer.domElement.setAttribute("aria-label", "Medieval university island. Move the mouse to aim; hold and release to fire an assignment.");
+document.querySelector("#scene").append(renderer.domElement);
